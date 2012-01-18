@@ -5,8 +5,8 @@ PROBLEM := $(shell basename $$(pwd))
 
 JAVA_SOURCES = $(wildcard *.java)
 ifneq "$(JAVA_SOURCES)" ""
-TARGET := $(PROBLEM).class
-RUN_COMMAND := java $(TARGET)
+TARGET := Main.class
+RUN_COMMAND := java Main
 endif
 
 CXX_SOURCES = $(wildcard *.cpp)
