@@ -1,7 +1,7 @@
 TESTS ?=
 OBJECTS := $(patsubst %.cpp, %.o, $(wildcard *.cpp))
 
-PROBLEM := $(shell basename $$(pwd))
+PROBLEM ?= $(shell basename $$(pwd))
 
 JAVA_SOURCES = $(wildcard *.java)
 ifneq "$(JAVA_SOURCES)" ""
