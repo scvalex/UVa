@@ -18,4 +18,4 @@ for d in *; do
     fi
 done
 printf -- "-------------------------------------------------------\n"
-printf "%10s | %4d | %4d\n" "Total" "${countAlex}" "${countPaul}"
+printf "%10s | %3d | %3d   |\n" "Total" "${countAlex}" "${countPaul}"
