@@ -1,6 +1,7 @@
 #!/bin/env python
 
 import json
+import pickle
 import sys
 import urllib2
 
@@ -22,9 +23,17 @@ VERDICTS = { 10 : "Submission error",
              80 : "PresentationE",
              90 : "Accepted" }
 
+userid_cache = None
+
 def get_userid(username):
-    url = USERID_URL % (username,)
-    return urllib2.urlopen(url).read()
+    global userid_cache
+
+    if not userid_cache.has_key(username):
+        url = USERID_URL % (username,)
+        userid = urllib2.urlopen(url).read()
+        userid_cache[username] = userid
+
+    return userid_cache[username]
 
 def get_problem(probnum):
     url = PROBLEM_URL % (str(probnum),)
@@ -43,16 +52,23 @@ def get_verdict(username, probnum):
     subs = get_user_submissions(username, probnum)
     if len(subs) > 1:
         return VERDICTS[subs[-1][2]]
-    return " "
+    return "n/a"
 
 def get_ranking(username):
     return get_user_rankings(username)[0]['rank']
 
 def main(args):
+    global userid_cache
+
     def check_args(args, num):
         if len(args) < num:
             print "Insufficient arguments"
             exit(1)
+
+    try:
+        userid_cache = pickle.load(open(".userid_cache", "rb"))
+    except Exception:
+        userid_cache = {}
 
     check_args(args, 1)
     if args[0] == 'ranking':
@@ -64,6 +80,8 @@ def main(args):
     else:
         print "Unknown command"
         exit(1)
+
+    pickle.dump(userid_cache, open(".userid_cache", "w"))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
