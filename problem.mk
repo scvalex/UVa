@@ -28,9 +28,14 @@ all: $(TARGET)
 .java.class:
 	javac $<
 
+define \n
+
+
+endef
+
 test: $(TARGET)
 	mkdir -p test
-	$(foreach i,$(TESTS),$(RUN_COMMAND) < $(PROBLEM).$(i).in > test/$(PROBLEM).$(i).out && diff $(PROBLEM).$(i).out test/$(PROBLEM).$(i).out)
+	$(foreach i,$(TESTS),$(RUN_COMMAND) < $(PROBLEM).$(i).in > test/$(PROBLEM).$(i).out && diff $(PROBLEM).$(i).out test/$(PROBLEM).$(i).out ${\n})
 
 clean:
 	rm -rf test/ *.class *.o $(TARGET)
