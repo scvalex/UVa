@@ -1,4 +1,4 @@
 PROBLEM=ugly
-TESTS=
+TESTS=1
 
 include ../problem.mk
