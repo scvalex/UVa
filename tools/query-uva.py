@@ -3,12 +3,14 @@
 import json
 import pickle
 import sys
+import time
 import urllib2
 
 USERID_URL = "http://uhunt.felix-halim.net/api/uname2uid/%s"
 PROBLEM_URL = "http://uhunt.felix-halim.net/api/p/num/%s"
-USER_SUBMISSION_URL = "http://uhunt.felix-halim.net/api/subs-nums/%s/%s/0"
+USER_SUBMISSIONS_URL = "http://uhunt.felix-halim.net/api/subs/%s"
 USER_RANKING_URL = "http://uhunt.felix-halim.net/api/ranklist/%s/0/0"
+PROBLEM_BY_ID_URL = "http://uhunt.felix-halim.net/api/p/id/%s"
 
 VERDICTS = { 10 : "Submission error",
              15 : "Can't be judged",
@@ -23,33 +25,45 @@ VERDICTS = { 10 : "Submission error",
              80 : "PresentationE",
              90 : "Accepted" }
 
-userid_cache = None
+cache = None
 
 def get_userid(username):
-    global userid_cache
+    global cache
 
-    if not userid_cache.has_key(username):
+    if not cache['userid'].has_key(username):
         url = USERID_URL % (username,)
         userid = urllib2.urlopen(url).read()
-        userid_cache[username] = userid
+        cache['userid'][username] = userid
 
-    return userid_cache[username]
+    return cache['userid'][username]
 
-def get_problem(probnum):
-    url = PROBLEM_URL % (str(probnum),)
-    return json.loads(urllib2.urlopen(url).read())
+def get_user_submissions(username):
+    global cache
 
-def get_user_submissions(username, probnum):
-    userid = get_userid(username)
-    url = USER_SUBMISSION_URL % (userid, str(probnum))
-    return json.loads(urllib2.urlopen(url).read())[userid]['subs']
+    if not cache['subs'].has_key(username):
+        userid = get_userid(username)
+        url = USER_SUBMISSIONS_URL % (userid, )
+        cache['subs'][username] = json.loads(json.loads(urllib2.urlopen(url).read())['subs'])
+    return cache['subs'][username]
+
+def get_user_problem_submissions(username, probnum):
+    subs = get_user_submissions(username)
+    return [sub for sub in subs if get_problem_num(sub[1]) == int(probnum)]
 
 def get_user_rankings(username):
     url = USER_RANKING_URL % (get_userid(username,))
     return json.loads(urllib2.urlopen(url).read())
 
+def get_problem_num(probid):
+    global cache
+
+    if not cache['problemnum'].has_key(probid):
+        url = PROBLEM_BY_ID_URL % (probid, )
+        cache['problemnum'][probid] = json.loads(urllib2.urlopen(url).read())['num']
+    return cache['problemnum'][probid]
+
 def get_verdict(username, probnum):
-    subs = get_user_submissions(username, probnum)
+    subs = get_user_problem_submissions(username, probnum)
     if len(subs) > 1:
         return VERDICTS[subs[-1][2]]
     return "n/a"
@@ -58,7 +72,7 @@ def get_ranking(username):
     return get_user_rankings(username)[0]['rank']
 
 def main(args):
-    global userid_cache
+    global cache
 
     def check_args(args, num):
         if len(args) < num:
@@ -66,9 +80,14 @@ def main(args):
             exit(1)
 
     try:
-        userid_cache = pickle.load(open(".userid_cache", "rb"))
-    except Exception:
-        userid_cache = {}
+        cache = pickle.load(open(".cache", "rb"))
+        if time.time() - cache['last_update'] > 60:
+            cache['subs'] = {}
+    except Exception, e:
+        cache = {'userid': {},
+                 'subs': {},
+                 'problemnum': {},
+                 'last_update': time.time()}
 
     check_args(args, 1)
     if args[0] == 'ranking':
@@ -81,7 +100,8 @@ def main(args):
         print "Unknown command"
         exit(1)
 
-    pickle.dump(userid_cache, open(".userid_cache", "w"))
+    cache['last_update'] = time.time()
+    pickle.dump(cache, open(".cache", "wb"))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
