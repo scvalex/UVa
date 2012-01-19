@@ -2,6 +2,9 @@
 
 import java.util.*;
 
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+
 public class Main{
 
 	static int bins[] = new int[9];
@@ -9,7 +12,7 @@ public class Main{
 	static ArrayList<ArrayList<Bin>> perms = makePermutations();
 
 	public static void main(String [] args) {
-		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 		List<Bin>  sol = null;
 		int i, totalMoves, minMoves;
 		while (sc.hasNext()){
