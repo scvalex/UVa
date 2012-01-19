@@ -1,4 +1,6 @@
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
 
@@ -7,7 +9,7 @@ public class Main {
 	public static void main(String [] args) {
 		int prev, i, curr, n;
 		boolean jolly;
-		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 		while (sc.hasNext()) {	
 			n = sc.nextInt();
 			prev = sc.nextInt();
