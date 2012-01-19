@@ -3,7 +3,7 @@
 dirs=$(find . -type d -a ! -name '.?*' -o -name '.?*' -a ! -prune)
 printf "%10s | %4s | %4s | Title\n" "Problem" "Alex" "Paul"
 printf -- "-------------------------------------------------------\n"
-for d in *; do
+for d in $(ls -v); do
     if [ -d ${d} ]; then
         email=$(git log --reverse --pretty='%ae' ${d}/README.md | tail -n1)
         author=$(echo ${email} | cut -d '.' -f1 | cut -d '@' -f1)
