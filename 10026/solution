@@ -1,0 +1,17 @@
+S = t1 * R2 + (t1 + t2) * R3 + (t1 + t2 + t3) * R4 + .... + (t1 + ... + tn-1) * Rn
+where 
+tn is time required for the nth job
+Rn the penalty for the nth job
+
+Swap i with j only if
+S > Sji  ( j > i )
+  <=> (t1 + ... + ti) * Ri + (t1 + ... + tj) * Rj > (t1 + ... + ti) * Rj + (t1 + ... + tj) * Ri
+  <=> (t(i+1) + .. + tj ) * Rj > (t(i+1) + ..... + tj ) * Ri
+  <=> Rj > Ri
+Stop when no improvement is possible.
+
+where 
+S   is the initial sum
+Sji is the sum with jobs i, j swapped
+
+(t1 + t2 + ... ti ) * R(i+1) 
