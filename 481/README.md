@@ -1,5 +1,5 @@
-PROBLEM TITLE
+481 - What Goes Up
 =======
 
-> [Problem statement](LINK)
+http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=422
 
