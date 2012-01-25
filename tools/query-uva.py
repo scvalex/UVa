@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/python
 
 import json
 import pickle

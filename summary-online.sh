@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function ranking {
     tools/query-uva.py ranking $1
