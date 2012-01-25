@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -x
+set -e
 
 # default_prompt "Language" lang cpp
 function default_prompt {
@@ -16,6 +16,8 @@ default_prompt "Long Name" longname "My Problem"
 default_prompt "Short Name" shortname "myproblem"
 
 echo "Creating: ${num} - ${longname} as ${shortname} in ${lang}"
+
+set -x
 
 edir="empty-$lang"
 
