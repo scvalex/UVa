@@ -3,86 +3,84 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 /*
-Store 
- - seq[k] - longest sequence which can be obtained with the numbers up to k.
- - num[i] - the number
- - prev[i] - the previous number from the sequence
- 
-seq[k+1] = max(1<=i<=k){seq[i] | num[i] < num[k] } + 1
-
-As an optimization, store the list sorted 
+ - a[j] - the smallest value which ends an increasing sequence of length j
+ - values[]  - stores the values 
+ - prev[i] - stores the previous value in the sequence for position i
 */
 
 public class Main {
+
+	static List<Integer> values = new ArrayList<Integer>();
+	static List<Integer> a = new ArrayList<Integer>();
+	static List<Integer> p = new ArrayList<Integer>();
+	static List<Integer> prev = new ArrayList<Integer>();
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 		
+		int n, maxLen = 0, pos;
 		
-
-		List<Pair> seq = new ArrayList<Pair>();
-
-		int n, maxLen;
-		
-		Pair prev = null;
-		
-		Pair best = null;
+		int i = 0;
 		
 		while ( sc.hasNext() ) {
-		
-			maxLen = 0;
-			
+
 			n = sc.nextInt();
-			
-			for ( Pair p : seq ) {
-				if ( p.num < n && p.len >= maxLen ) {
-					prev = p;
+
+			if ( a.size() > 0 && n > a.get(0) ) {
+				pos =  Collections.binarySearch(a, n);
+				if ( pos < 0 ) {
+					pos = -(pos +1);
 				}
+ 			} else {
+ 				if ( a.size() > 0 ) {
+ 					a.set(0, n);
+ 					p.set(0,i);
+ 				} else {
+					a.add(0, n);	
+					p.add(0, i);
+ 				}
+				pos = 0;
 			}
 			
-			Pair newPair = new Pair(n, (prev == null ? 0 : prev.len) + 1);
-			newPair.prev = prev;			
-			
-			seq.add(newPair);
-			
-			if (best == null) 
-				best = newPair;
-			else if (newPair.len >= best.len) 
-				best = newPair;
+			if ( pos >= 0 ) {
+				if ( pos < a.size() ) {
+					if ( a.get(pos) >= n ) {
+						a.set(pos, n);
+						p.set(pos, i);
+					}
+				} else {
+					a.add(pos, n);
+					p.add(pos, i);
+				}
+			}
+
+			if (pos>=1)
+				prev.add(i, p.get(pos-1));
+			else 
+				prev.add(i, -1);
+
+			values.add(n);
+
+			i++;
+
 		}
 		
-		Pair c = best;
+		pos = p.get(p.size() - 1);
+		
 		Stack<Integer> stack = new Stack<Integer>();
-		stack.push(best.num);
-		while ( c.prev != null )  {
-			c = c.prev;
-			stack.push(c.num);
+		while ( pos != -1 ) { 
+			stack.push(values.get(pos));
+			pos = prev.get(pos);
 		}
 		
-		System.out.println(best.len);
+		
+		System.out.println(a.size());
 		System.out.println("-");
-		
 		while ( !stack.isEmpty() ) {
-			System.out.println(stack.pop());
+				System.out.println(stack.pop());
 		}
-		
+
 		sc.close();
-	}
-	
-	static Pair pair(int num, int len) {
-		return new Pair(num, len);
 	}
 }
 
-class Pair {
-	int num;
-	int len;
-	Pair prev; 
-	Pair(int num, int len) {
-		this.num = num;
-		this.len = len;
-	}
-	@Override
-	public String toString() {
-		return "(num: " + num + ", len: " + len + ", prev: " + (prev == null ? "null" : prev.num) + ")" ;	
-	}
-}
