@@ -1,4 +1,4 @@
-481 - What Goes Up
+What Goes Up
 =======
 
 http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=422

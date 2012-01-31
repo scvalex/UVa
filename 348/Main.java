@@ -43,9 +43,9 @@ public class Main {
 
 			}
 			num = 1;
-			System.out.print("Case " + nTests + ": " );
+			System.out.print("Case " + nTests + ": (" );
 			showSolution(pos, 0, n-1);
-			System.out.println();
+			System.out.println(")");
 	
 			for (i=0;i<MAX_N;i++)	
 				for (j=0;j<MAX_N;j++)
@@ -57,12 +57,21 @@ public class Main {
 	static int num;
 
 	static void showSolution(int [][] pos, int a, int b) {
-		int prevNum = num;
 		if (a==b) {System.out.print("A" + (num++)); return; }
-		System.out.print("(");
-		showSolution(pos, a, pos[a][b]);
-		System.out.print(")x(");
-		showSolution(pos, pos[a][b] + 1,  b);
-		System.out.print(")");
+		if (a != pos[a][b] ) { 
+			System.out.print("(");
+			showSolution(pos, a, pos[a][b]);
+			System.out.print(")");
+		} else {
+			showSolution(pos, a, pos[a][b]);
+		}
+		System.out.print(" x ");
+		if ( b != pos[a][b] + 1) {
+			System.out.print("(");
+			showSolution(pos, pos[a][b] + 1,  b);
+			System.out.print(")");
+		} else { 
+			showSolution(pos, pos[a][b] + 1,  b);
+		}
 	}
 }
