@@ -3,14 +3,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Main {
+
+	static final ArrayList<Integer> heights = new ArrayList<Integer>();
+	static final ArrayList<Integer> widths = new ArrayList<Integer>();
+	static final ArrayList<Integer> bestInc = new ArrayList<Integer>();
+	static final ArrayList<Integer> bestDec = new ArrayList<Integer>();
+
+
+	static final Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+		
+	static final StringBuilder sb = new StringBuilder("");
+
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 		
 		int nTests = sc.nextInt();
-		
-		ArrayList<Integer> heights = new ArrayList<Integer>();
-		ArrayList<Integer> widths = new ArrayList<Integer>();
-		
 		
 		int i,kk,j,n, increasing, decreasing;
 		
@@ -24,47 +30,52 @@ public class Main {
 				widths.add(sc.nextInt());
 			}
 
-			increasing = longestSeq(heights, widths);
+			sb.append("Case " + kk + ". ");
 
-			for (i=0;i<n;i++) {
-				heights.set(i, -heights.get(i));
-			}
-
-			decreasing = longestSeq(heights, widths);
-			
-			System.out.print("Case " + kk + ". ");
-			if (increasing >= decreasing) {
-				System.out.println("Increasing (" + increasing + "). Decreasing (" + decreasing + ").");
-			} else {
-				System.out.println("Decreasing (" + decreasing + "). Increasing (" + increasing + ").");
-			}
+			longestSeq(heights, widths);
 			
 			heights.clear();
 			widths.clear();
 		}
 		
+		System.out.print(sb.toString());
+		
 		sc.close();
 	}
 	
-	static int longestSeq(ArrayList<Integer> heights, ArrayList<Integer> widths) {
-		int bestWidth = 0;
+	static void longestSeq(ArrayList<Integer> heights, ArrayList<Integer> widths) {
 		
-		ArrayList<Integer> best = new ArrayList<Integer>();
-		int max, i, j, n = heights.size();
+		int maxInc, i, j, n = heights.size();
+		int maxDec;
+		int bestWidthInc = 0, bestWidthDec = 0;
 		
 		for (i=0;i<n;i++) {
-			max = 0;
+			maxInc = 0;
+			maxDec = 0;
 			for (j=0;j<i;j++) {
 				if ( heights.get(j) < heights.get(i) ) {
-					max = Math.max(max, best.get(j));
+					maxInc = Math.max(maxInc, bestInc.get(j));
+				} else if ( heights.get(j) > heights.get(i) ) {
+					maxDec = Math.max(maxDec, bestDec.get(j));
 				}
 			}
-			max += widths.get(i);
-			best.add(max);
-			bestWidth = Math.max(bestWidth, max);
+			maxInc += widths.get(i);
+			maxDec += widths.get(j);
+			bestInc.add(maxInc);
+			bestDec.add(maxDec);
+			bestWidthInc = Math.max(bestWidthInc, maxInc);
+			bestWidthDec = Math.max(bestWidthDec, maxDec);
+		}
+
+
+		if (bestWidthInc >= bestWidthDec) {
+			sb.append( "Increasing (" + bestWidthInc + "). Decreasing (" + bestWidthDec + ").\n");
+		} else {
+			sb.append("Decreasing ("  + bestWidthDec + "). Increasing (" + bestWidthInc + ").\n");
 		}
 		
-		return bestWidth;
+		bestInc.clear();
+		bestDec.clear();
 	}
 	
 }

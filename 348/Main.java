@@ -5,14 +5,14 @@ import java.io.InputStreamReader;
 public class Main {
 
 	static final int MAX_N = 20;
+	static final int [] cols = new int[MAX_N];
+	static final int [] rows = new int[MAX_N];	
+	static final int [][] best = new int [MAX_N][MAX_N];
+	static final int [][] pos = new int [MAX_N][MAX_N];
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 		int n, size, k, i, j, bst, a, b, val;
-		int [] cols = new int[MAX_N];
-		int [] rows = new int[MAX_N];	
-		int [][] best = new int [MAX_N][MAX_N];
-		int [][] pos = new int [MAX_N][MAX_N];
 		int nTests = 0;
 		while (sc.hasNext()) {
 			nTests++;
@@ -39,39 +39,32 @@ public class Main {
 						best[i][j] = bst;
 					}
 				}
-		
-
 			}
+			
 			num = 1;
-			System.out.print("Case " + nTests + ": (" );
-			showSolution(pos, 0, n-1);
-			System.out.println(")");
+			sb.append("Case " + nTests + ": " );
+			showSolution(0, n-1);
+			sb.append("\n");
 	
 			for (i=0;i<MAX_N;i++)	
 				for (j=0;j<MAX_N;j++)
 					best[i][j] = pos[i][j] = 0;
 		}
+		
+		System.out.print(sb.toString());
+		
 		sc.close();
 	}
 
 	static int num;
+	static StringBuilder sb = new StringBuilder("");
 
-	static void showSolution(int [][] pos, int a, int b) {
-		if (a==b) {System.out.print("A" + (num++)); return; }
-		if (a != pos[a][b] ) { 
-			System.out.print("(");
-			showSolution(pos, a, pos[a][b]);
-			System.out.print(")");
-		} else {
-			showSolution(pos, a, pos[a][b]);
-		}
-		System.out.print(" x ");
-		if ( b != pos[a][b] + 1) {
-			System.out.print("(");
-			showSolution(pos, pos[a][b] + 1,  b);
-			System.out.print(")");
-		} else { 
-			showSolution(pos, pos[a][b] + 1,  b);
-		}
+	static  void showSolution(int a, int b) {
+		if (a==b) {sb.append("A" + (num++)); return; }
+		sb.append("(");
+		showSolution(a, pos[a][b]);
+		sb.append(" x ");
+		showSolution(pos[a][b] + 1,  b);
+		sb.append(")");
 	}
 }
