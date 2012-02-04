@@ -35,7 +35,7 @@ endef
 
 test: $(TARGET)
 	mkdir -p test
-	$(foreach i,$(TESTS),$(RUN_COMMAND) < $(PROBLEM).$(i).in > test/$(PROBLEM).$(i).out && diff $(PROBLEM).$(i).out test/$(PROBLEM).$(i).out ${\n})
+	$(foreach i,$(TESTS),$(RUN_COMMAND) < $(PROBLEM).$(i).in > test/$(PROBLEM).$(i).out && diff $(PROBLEM).$(i).out test/$(PROBLEM).$(i).out${\n})
 
 clean:
 	rm -rf test/ *.class *.o $(TARGET)
