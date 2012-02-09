@@ -14,7 +14,7 @@ ifneq "$(CXX_SOURCES)" ""
 TARGET := $(PROBLEM)
 RUN_COMMAND := ./$(TARGET)
 $(TARGET): $(OBJECTS)
-	g++ -Wall -O2 -lm $(OBJECTS) -o $(TARGET)
+	g++ -Wall -g -lm $(OBJECTS) -o $(TARGET)
 endif
 
 all: $(TARGET)
@@ -22,7 +22,7 @@ all: $(TARGET)
 .PHONY: all build test
 
 .cpp.o:
-	g++ -c -Wall $< -o $@
+	g++ -c -g -Wall $< -o $@
 
 .SUFFIXES: .java .class
 .java.class:
@@ -35,7 +35,7 @@ endef
 
 test: $(TARGET)
 	mkdir -p test
-	$(foreach i,$(TESTS),$(RUN_COMMAND) < $(PROBLEM).$(i).in > test/$(PROBLEM).$(i).out && diff $(PROBLEM).$(i).out test/$(PROBLEM).$(i).out ${\n})
+	$(foreach i,$(TESTS),$(RUN_COMMAND) < $(PROBLEM).$(i).in > test/$(PROBLEM).$(i).out && diff $(PROBLEM).$(i).out test/$(PROBLEM).$(i).out${\n})
 
 clean:
 	rm -rf test/ *.class *.o $(TARGET)
