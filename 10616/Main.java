@@ -3,16 +3,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Main {
+	static final Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
-
 
 		long [][][] sol;
 		
 		int [] numbers;
 		int nTests = 1;
-		
-		boolean first = true;		
 		
 		int n,q,d,m;
 		
@@ -28,7 +25,7 @@ public class Main {
 			for (int i=1;i<=n;i++) {
 				numbers[i] = sc.nextInt();
 			}
-			first = true;
+
 			System.out.println("SET " + (nTests++) + ":");
 			for (int qq=1;qq<=q;qq++) {
 				d = sc.nextInt();
@@ -63,8 +60,8 @@ public class Main {
 	public static int mod(int a, int b) {
 		int c = a % b;
 		if ( a < 0 )
-			c += a;
-		return c;
+			c += b;
+		return c % b;
 	}
 	
 }
