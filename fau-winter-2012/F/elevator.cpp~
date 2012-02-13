@@ -1,0 +1,24 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int n;
+vector<int> ts;
+
+int main(int argc, char *argv[]) {
+        int numTests(0);
+        cin >> numTests;
+
+        while (numTests-- > 0) {
+                cin >> n;
+                ts.clear();
+                ts.resize(n);
+
+                for (int i(0); i < n; ++i) {
+                        cin >> ts[i];
+                }
+        }
+
+        return 0;
+}

@@ -1,0 +1,17 @@
+#include <cstdio>
+#include <set>
+
+using namespace std;
+
+char parts[100000][20];
+
+int main(int argc, char *argv[]) {
+        int n, m;
+        cin >> n >> m;
+
+        for (int i(0); i < n; ++i) {
+                
+        }
+
+        return 0;
+}
