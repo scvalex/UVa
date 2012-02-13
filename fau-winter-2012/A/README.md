@@ -1,4 +1,4 @@
-PROBLEM TITLE
+Beer Distribution
 =======
 
 > [Problem statement](LINK)

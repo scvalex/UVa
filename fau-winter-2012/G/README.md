@@ -1,4 +1,4 @@
-PROBLEM TITLE
+IKEA
 =======
 
 > [Problem statement](LINK)
