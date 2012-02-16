@@ -20,8 +20,11 @@ public class Main {
 		///System.out.println("m: " + m + " n: " + n);		
 
 		ArrayList<String> allWords = new ArrayList<String>();
-		for (int i=0;i<n;i++)
-			allWords.add(br.readLine());
+		HashMap<String, HashMap<Integer, Pair>> count = new HashMap<String, HashMap<Integer, Pair>>();
+		for (int i=0;i<n;i++) {
+			String word = br.readLine();
+			allWords.add(word);
+		}
 
 		Collections.sort(allWords);
 
@@ -34,10 +37,20 @@ public class Main {
 				if ( words == null ) {
 					words = new ArrayList<String>();
 					dictionary.put(suffix, words);
+					count.put(suffix, new HashMap<Integer, Pair>());
 				}
 				//System.out.print("suffix: \'" + suffix + "\'");
 				//System.out.println(" idx: " + index);
 				words.add(word);
+
+				HashMap<Integer, Pair> countLen = count.get(suffix);
+				Pair pair = countLen.get(len);
+				if ( pair == null ) 
+					countLen.put(len, new Pair(1, word));
+				else {
+					Pair p = countLen.get(len);
+					p.count++;
+				}
 			}
 		}
 
@@ -60,18 +73,12 @@ public class Main {
 			int found = 0;
 			String foundWord = "";
 			if ( word.charAt(0) == ' ' ) {
-				for (String w : words) {
-					if ( wordsEqual(w, word) ) {
-						found++;
-						foundWord = w;
-					}
-					if ( found > 1 ) break;
-				}
-
-				if ( found == 0 )
+				Pair p = count.get(suff).get(word.length());
+				
+				if ( p == null || p.count == 0 )
 					sb.append("not found\n");
-				else if ( found == 1 )
-					sb.append(foundWord + "\n");
+				else if ( p.count == 1 )
+					sb.append( p.word + "\n");
 				else
 					sb.append("not unique\n");				
 				continue;
@@ -119,5 +126,14 @@ public class Main {
 		}
 
 		return true;
+	}
+}
+
+class Pair {
+	int count;
+	String word;
+	Pair (int count, String word) {
+		this.count = count;
+		this.word  = word;
 	}
 }
