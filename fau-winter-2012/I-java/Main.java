@@ -20,49 +20,70 @@ public class Main {
 		///System.out.println("m: " + m + " n: " + n);		
 
 		ArrayList<String> allWords = new ArrayList<String>();
+		ArrayList<String> allSuffixes = new ArrayList<String>();
+		ArrayList<String> queries = new ArrayList<String>();
 		HashMap<String, HashMap<Integer, Pair>> count = new HashMap<String, HashMap<Integer, Pair>>();
 		for (int i=0;i<n;i++) {
 			String word = br.readLine();
 			allWords.add(word);
 		}
+		
+		long start, end;
+		
+		//start = System.currentTimeMillis();
+		for (int i=0;i<m;i++) {
+			//System.out.println("-------------" + i + "--------------");
+			String word = br.readLine();
+			String suffix = findSuffix(word);
+			allSuffixes.add(suffix);
+			queries.add(word);
+			dictionary.put(suffix, new ArrayList<String>());
+			count.put(suffix, new HashMap<Integer, Pair>());
+		}
+		//end = System.currentTimeMillis();
+		
+		//System.out.println("Got suffixes: " + (end - start));		
 
+		//start = System.currentTimeMillis();
 		Collections.sort(allWords);
-
+		//end = System.currentTimeMillis();
+		
+		//System.out.println("Sorted dictionary: " + (end - start));
+		
+  	//start = System.currentTimeMillis();
 		for (int i=0;i<n;i++) {
 			String word = allWords.get(i);
 			int len = word.length();
 			for (int j=0;j<=len; j++) {
 				String suffix = word.substring(j);
 				ArrayList<String> words = dictionary.get(suffix);
-				if ( words == null ) {
-					words = new ArrayList<String>();
-					dictionary.put(suffix, words);
-					count.put(suffix, new HashMap<Integer, Pair>());
-				}
-				//System.out.print("suffix: \'" + suffix + "\'");
-				//System.out.println(" idx: " + index);
-				words.add(word);
-
-				HashMap<Integer, Pair> countLen = count.get(suffix);
-				Pair pair = countLen.get(len);
-				if ( pair == null ) 
-					countLen.put(len, new Pair(1, word));
-				else {
-					Pair p = countLen.get(len);
-					p.count++;
+				if ( words != null ) {
+					//System.out.print("suffix: \'" + suffix + "\'");
+					//System.out.println(" idx: " + index);
+					words.add(word);
+					HashMap<Integer, Pair> countLen = count.get(suffix);
+					Pair pair = countLen.get(len);
+					if ( pair == null ) 
+						countLen.put(len, new Pair(1, word));
+					else {
+						Pair p = countLen.get(len);
+						p.count++;
+					}
 				}
 			}
 		}
+		//end = System.currentTimeMillis();
 
+		//System.out.println("Built dictionary in: " + (end - start));		
 		//System.out.println("Built dictionary: ");
 		//System.out.println(dictionary.toString());
 
 		StringBuilder sb = new StringBuilder();
 		for (int i=0;i<m;i++) {
 			//System.out.println("-------------" + i + "--------------");
-			String word = br.readLine();
 			//System.out.println("word \'"  + word + "\'");
-			String suff = findSuffix(word);
+			String suff = allSuffixes.get(i);
+			String word = queries.get(i);
 			//System.out.println("suffix : \'" + suff + "\'");
 			ArrayList<String> words = dictionary.get(suff);
 			if ( words == null ) {
@@ -90,7 +111,7 @@ public class Main {
 				index = -(index + 1);
 			}
 			
-			if ( wordsEqual(word, words.get(index)) ) {
+			if ( index < words.size() && wordsEqual(word, words.get(index)) ) {
 				if ( index + 1 < words.size() && 
 					wordsEqual(word, words.get(index+1)) ) {
 					sb.append("not unique\n");
@@ -102,8 +123,8 @@ public class Main {
 			}
 		}
 
-		System.out.println(sb.toString());
-	
+		// no trim gives WA
+		System.out.println(sb.toString().trim());
 	}
 
 	static String findSuffix(String word) {
@@ -119,9 +140,8 @@ public class Main {
 		if ( word1.length() != word2.length()) 
 			return false;
 
-		for (int i=0;i<word1.length();i++) {
-			if ( ! (word1.charAt(i) == word2.charAt(i) || 
-				word1.charAt(i) == ' ' || word2.charAt(i) == ' '))
+		for (int i=0;i<word1.length() && word1.charAt(i) != ' ' && word2.charAt(i) != ' ';i++) {
+			if ( word1.charAt(i) != word2.charAt(i) )
 				return false;
 		}
 

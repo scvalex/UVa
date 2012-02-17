@@ -1,4 +1,4 @@
-Beer Distribution
+Scratched Part Numbers (Java)
 =======
 
 > [Problem statement](LINK)
