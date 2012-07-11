@@ -13,4 +13,5 @@ tabs-to-spaces:
 
 tests:
 	@ echo "Running tests for all problems. This may take a while..."
-	find . -type d -maxdepth 1 -not -name "empty-java" -not -name "empty-cpp" -exec sh -c "cd {} && make test" \;
+	find . -type d -maxdepth 1 -not -regex ".*empty-java\|.*empty-cpp" \
+		-exec sh -c "cd {} && make test" \;
