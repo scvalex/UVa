@@ -15,30 +15,30 @@ public class Main {
 
     public static void main(String[] args) {
 
-	Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 
-	boolean first = true;
-	    
-	C = new long[MAX_SIZE  + 1];
-	C[0] = 1;
+        boolean first = true;
+            
+        C = new long[MAX_SIZE  + 1];
+        C[0] = 1;
 
-	for (int c=0; c < coins.length; c++)  {
-	    for (int i=0;i<=MAX_SIZE; i++) {
-		int pos = i - coins[c];
-		if ( pos >= 0 ) {
-		    C[i] += C[pos];
-		}
-	    }
-	}
-	
-	while (sc.hasNext()) {
-	    
-	    int n = sc.nextInt();
+        for (int c=0; c < coins.length; c++)  {
+            for (int i=0;i<=MAX_SIZE; i++) {
+                int pos = i - coins[c];
+                if ( pos >= 0 ) {
+                    C[i] += C[pos];
+                }
+            }
+        }
+        
+        while (sc.hasNext()) {
+            
+            int n = sc.nextInt();
 
-	    System.out.println(C[n]);
+            System.out.println(C[n]);
 
-	}
+        }
 
-	sc.close();
+        sc.close();
     }
 }

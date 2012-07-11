@@ -11,75 +11,75 @@ public class Main {
     private static final int [] marked = new int [MAX_SIZE];
 
     public static void main(String[] args) {
-	Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 
-	int n;
+        int n;
 
-	StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-	boolean first = true;
+        boolean first = true;
 
-	while ( true ) {
-	    n = sc.nextInt();
+        while ( true ) {
+            n = sc.nextInt();
 
-	    if ( n == 0 )
-		break;
+            if ( n == 0 )
+                break;
 
-	    System.out.println(findM(n));
-	}
+            System.out.println(findM(n));
+        }
 
-	// gives WA if last line is trimmed
+        // gives WA if last line is trimmed
 
-	sc.close();
+        sc.close();
     }
 
     private static int findM(int n)  {
 
-	boolean found = false;
-	int nMarked = 0, pos = 1, count, m = 1;
-	
+        boolean found = false;
+        int nMarked = 0, pos = 1, count, m = 1;
+        
 
-	List<Integer> sol = new ArrayList<Integer>();
-	
-	while (!found) {
+        List<Integer> sol = new ArrayList<Integer>();
+        
+        while (!found) {
 
-	    pos = 1;
-	    nMarked = 1;
-	    
-	    for (int i=2;i<marked.length;i++)
-		marked[i] = 0;
-	    marked[1] = 1;
+            pos = 1;
+            nMarked = 1;
+            
+            for (int i=2;i<marked.length;i++)
+                marked[i] = 0;
+            marked[1] = 1;
 
-	    //	    sol.clear();
-	    //	    sol.add(1);
+            //      sol.clear();
+            //      sol.add(1);
 
-	    while ( (pos != WELLINGTON) && (nMarked < n) ) {
-		count = 0;
-		
-		while ( count < m) {
-		    pos = ( pos == n ? 1 : pos + 1);
+            while ( (pos != WELLINGTON) && (nMarked < n) ) {
+                count = 0;
+                
+                while ( count < m) {
+                    pos = ( pos == n ? 1 : pos + 1);
 
-		    if (marked[pos] == 0)
-			count++;
-		}
+                    if (marked[pos] == 0)
+                        count++;
+                }
 
-		marked[pos] = 1;
-		nMarked++;
-		sol.add(pos);
-	    }
+                marked[pos] = 1;
+                nMarked++;
+                sol.add(pos);
+            }
 
-	    found = ( pos == WELLINGTON && nMarked == n);
+            found = ( pos == WELLINGTON && nMarked == n);
 
-	    //	    System.out.println("m: " + m + " " + " found: " + found +  " " + sol.toString());
-	    
-	    m++;
-	}
+            //      System.out.println("m: " + m + " " + " found: " + found +  " " + sol.toString());
+            
+            m++;
+        }
 
-	m--;
+        m--;
 
-	//	System.out.println("m: " + m + " " + sol.toString());
+        //      System.out.println("m: " + m + " " + sol.toString());
 
-	return m;
+        return m;
     }
      
 }
