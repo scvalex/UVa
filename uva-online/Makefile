@@ -8,5 +8,9 @@ init-java:
 usage:
 	@echo "usage: make init-java P=<PROBLEM_NUMBER>"
 	
-	
+tabs-to-spaces:
+	find . -name "*.java" -exec sh -c "expand {} > tmp && mv tmp {}" \;
 
+tests:
+	@ echo "Running tests for all problems. This may take a while..."
+	find . -type d -maxdepth 1 -not -name "empty-java" -not -name "empty-cpp" -exec sh -c "cd {} && make test" \;
