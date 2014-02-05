@@ -13,10 +13,10 @@ for d in $(ls -v); do
         title=$(head -n1 ${d}/README.md)
         if [ "x${author}" = "xpaulg" ]; then
             printf "%10s | %4s | %4s | %s\n" ${d} "" "X " "${title}"
-            countPaul=$(expr ${countPaul} + 1)
+            countPaul=$((${countPaul} + 1))
         elif [ "x${author}" = "xscvalex" ]; then
             printf "%10s | %4s | %4s | %s\n" ${d} "X " "" "${title}"
-            countAlex=$(expr ${countAlex} + 1)
+            countAlex=$((${countAlex} + 1))
         else
             printf "%10s | %4s | %4s | %s\n" ${d} "" "" "${title}"
         fi
